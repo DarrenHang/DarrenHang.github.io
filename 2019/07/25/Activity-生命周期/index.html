@@ -86,31 +86,28 @@
 
 
 
-<meta name="description" content="#1.保留指定和默认资源   // apk-string.xml        resConfigs(‘zh-rCN’,’ko’)  在 resources.arsc 下的 string 中可以看到各种语言（这些语言是从哪里来的？）这些语言其实来自于 com.android.support:appcompat-v7 包中   下面看看加入上面配置之后  对比两个文件，是不是一目了然 #2.将指定S">
+<meta name="description" content="#博主目前写文章是对日常开发的总结以及回顾，以及自我驱动。  本文参考- Android 开发艺术探索  #####分析正常情况下 Activity 的生命周期  第一次启动  切换到桌面  回到当前 Activity  退出 Activity   A - B  MainActivity 执行了 onPauseSecondActivity 执行了正常创建的生命周期流程MainActivity 执行">
 <meta property="og:type" content="article">
-<meta property="og:title" content="日常开发总结-APK 瘦身 优化">
-<meta property="og:url" content="http://yoursite.com/2019/04/15/APK-优化/index.html">
+<meta property="og:title" content="日常开发总结-Activity 生命周期 (手撸 Android 开发艺术探索)">
+<meta property="og:url" content="http://yoursite.com/2019/07/25/Activity-生命周期/index.html">
 <meta property="og:site_name" content="DarrenHang">
-<meta property="og:description" content="#1.保留指定和默认资源   // apk-string.xml        resConfigs(‘zh-rCN’,’ko’)  在 resources.arsc 下的 string 中可以看到各种语言（这些语言是从哪里来的？）这些语言其实来自于 com.android.support:appcompat-v7 包中   下面看看加入上面配置之后  对比两个文件，是不是一目了然 #2.将指定S">
+<meta property="og:description" content="#博主目前写文章是对日常开发的总结以及回顾，以及自我驱动。  本文参考- Android 开发艺术探索  #####分析正常情况下 Activity 的生命周期  第一次启动  切换到桌面  回到当前 Activity  退出 Activity   A - B  MainActivity 执行了 onPauseSecondActivity 执行了正常创建的生命周期流程MainActivity 执行">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-edb852573595dc76.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-f1383fa6fd2145e5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-d60a9445ba439cd3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-c6fe0fdcf3598ce1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-8ded69c84e378856.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-e051b775f5122a66.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-e802ac7b5ac87e44.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-6da75c8a7a38dfc8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-403b9477c51ff883.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-5ecbbbbbd99e5079.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-e996f7387176ae88.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-42a8416a2d5afb33.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-ffbdbd93fce0fb03.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2019-07-31T07:19:20.332Z">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-609da5e309e7bba3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-d91f62d493874e65.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-ba7185b0baad557c.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-83e2dedc5de7084e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-1371dec1e997270b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-c792ab3dba1134b9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-856b9df7c601543c.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-7566241f083dc461.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-9912d1d7b326fec5.gif?imageMogr2/auto-orient/strip">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-b067459f9f482baa.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2019-07-31T07:21:24.518Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="日常开发总结-APK 瘦身 优化">
-<meta name="twitter:description" content="#1.保留指定和默认资源   // apk-string.xml        resConfigs(‘zh-rCN’,’ko’)  在 resources.arsc 下的 string 中可以看到各种语言（这些语言是从哪里来的？）这些语言其实来自于 com.android.support:appcompat-v7 包中   下面看看加入上面配置之后  对比两个文件，是不是一目了然 #2.将指定S">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/8369889-edb852573595dc76.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:title" content="日常开发总结-Activity 生命周期 (手撸 Android 开发艺术探索)">
+<meta name="twitter:description" content="#博主目前写文章是对日常开发的总结以及回顾，以及自我驱动。  本文参考- Android 开发艺术探索  #####分析正常情况下 Activity 的生命周期  第一次启动  切换到桌面  回到当前 Activity  退出 Activity   A - B  MainActivity 执行了 onPauseSecondActivity 执行了正常创建的生命周期流程MainActivity 执行">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/8369889-609da5e309e7bba3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -140,13 +137,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/04/15/APK-优化/">
+  <link rel="canonical" href="http://yoursite.com/2019/07/25/Activity-生命周期/">
 
 
 
 
 
-  <title>日常开发总结-APK 瘦身 优化 | DarrenHang</title>
+  <title>日常开发总结-Activity 生命周期 (手撸 Android 开发艺术探索) | DarrenHang</title>
   
 
 
@@ -253,7 +250,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/15/APK-优化/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/25/Activity-生命周期/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="DarrenHang">
@@ -270,7 +267,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">日常开发总结-APK 瘦身 优化</h1>
+          <h1 class="post-title" itemprop="name headline">日常开发总结-Activity 生命周期 (手撸 Android 开发艺术探索)</h1>
         
 
         <div class="post-meta">
@@ -282,8 +279,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-15T00:00:00+08:00">
-                2019-04-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-25T00:00:00+08:00">
+                2019-07-25
               </time>
             
 
@@ -314,7 +311,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  407 字
+                  323 字
                 </span>
               
 
@@ -330,7 +327,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2 分钟
+                  1 分钟
                 </span>
               
             </div>
@@ -351,58 +348,47 @@
       
 
       
-        <p>#1.保留指定和默认资源</p>
+        <p>#博主目前写文章是对日常开发的总结以及回顾，以及自我驱动。</p>
 <blockquote>
-<p> // apk-string.xml<br>        resConfigs(‘zh-rCN’,’ko’)</p>
+<p>本文参考- Android 开发艺术探索</p>
 </blockquote>
-<p>在 resources.arsc 下的 string 中可以看到各种语言（这些语言是从哪里来的？）这些语言其实来自于 com.android.support:appcompat-v7 包中</p>
-<p> <img src="https://upload-images.jianshu.io/upload_images/8369889-edb852573595dc76.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="resources.arsc"></p>
-<p>下面看看加入上面配置之后</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-f1383fa6fd2145e5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="resources.arsc"></p>
-<p>对比两个文件，是不是一目了然</p>
-<p>#2.将指定SO库打包APK</p>
-<p>这里用的是百度语音的 SO 库</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-d60a9445ba439cd3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="lib"></p>
-<p>接下来开始配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sourceSets&#123;</span><br><span class="line">      main&#123;</span><br><span class="line">          jniLibs.srcDirs = [&apos;libs&apos;]</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>在 defaultConfig 中配置打包到 APK 的SO库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//将指定的So库打包到APK</span><br><span class="line">        ndk&#123;</span><br><span class="line">            abiFilters(&apos;armeabi&apos;)</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>记录下配置前 APK 大小</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-c6fe0fdcf3598ce1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="原 APK 大小"></p>
-<p>接下来看看配置之后 APK 大小</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-8ded69c84e378856.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="后 APK 大小"></p>
+<p>#####分析正常情况下 Activity 的生命周期</p>
+<ul>
+<li><p>第一次启动<br><img src="https://upload-images.jianshu.io/upload_images/8369889-609da5e309e7bba3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="正常启动Activity.jpg"></p>
+</li>
+<li><p>切换到桌面<br><img src="https://upload-images.jianshu.io/upload_images/8369889-d91f62d493874e65.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="切换到桌面.jpg"></p>
+</li>
+<li><p>回到当前 Activity<br><img src="https://upload-images.jianshu.io/upload_images/8369889-ba7185b0baad557c.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="再次回到当前Activity.jpg"></p>
+</li>
+<li><p>退出 Activity<br><img src="https://upload-images.jianshu.io/upload_images/8369889-83e2dedc5de7084e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="退出Activity.jpg"></p>
+</li>
+</ul>
+<h5 id="A-B"><a href="#A-B" class="headerlink" title="A - B"></a>A - B</h5><p><img src="https://upload-images.jianshu.io/upload_images/8369889-1371dec1e997270b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="生命周期变化.jpg"></p>
 <blockquote>
-<p>18.6M → 5.48M 现在只是一部分 SO 库，真实项目可能会用到更多 SO 库。</p>
+<p>MainActivity 执行了 onPause<br>SecondActivity 执行了正常创建的生命周期流程<br>MainActivity 执行了 onStop</p>
 </blockquote>
-<p>对比两个文件，是不是一目了然</p>
-<p>#3.移除无用的资源（打包配置）</p>
-<p>物理删除（不推荐，想了解的可以百度）</p>
+<h5 id="B-返回-A"><a href="#B-返回-A" class="headerlink" title="B 返回 A"></a>B 返回 A</h5><p><img src="https://upload-images.jianshu.io/upload_images/8369889-c792ab3dba1134b9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="返回.jpg"></p>
+<p>#####分析异常情况下 Activity 的生命周期</p>
+<p>#####屏幕旋转 Activity 的生命周期</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8369889-856b9df7c601543c.gif?imageMogr2/auto-orient/strip" alt="屏幕旋转.gif"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8369889-7566241f083dc461.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="旋转.jpg"></p>
 <blockquote>
-<p> shrinkResources true</p>
+<p>看生命周期可以发现，在 Activity 正常销毁时候不会掉用 onSaveInstanceState，所以我们可以了理解成在 Activity 异常销毁时才会执行 onSaveInstanceState 和 onRestoreInstanceState 来存储和恢复数据。</p>
 </blockquote>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-e051b775f5122a66.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="配置前"></p>
-<p>看看配置之后</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-e802ac7b5ac87e44.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="配置后"></p>
 <blockquote>
-<p>390B → 47B ，只需要在 res 目录下创建 keep.xml ，然后打包时配置 shrinkResources true</p>
+<p>注：如果不想系统重新创建 Activity ，可以给 Activity 指定 configChanges 属性，指定多个熟悉可以用 | 拼接</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;resources</span><br><span class="line">    xmlns:tools=&quot;http://schemas.android.com/tools&quot;</span><br><span class="line">    tools:keep=&quot;@layout/activity_main&quot;</span><br><span class="line">    tools:shrinkMode=&quot;strict&quot;</span><br><span class="line">    /&gt;</span><br></pre></td></tr></table></figure>
-<p>#4.webp</p>
-<p>还是先上图，在 drawable 中放入2M左右的图片（可能工程中会引用 1M 或者更大的图片），将它作为背景图，看看打包后 APK 的大小</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-6da75c8a7a38dfc8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="webp.png"></p>
-<p>打包大小</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-403b9477c51ff883.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="APK 大小"></p>
-<p>接下来将图片转化为 webp</p>
-<p>选中图片，反键，Convert to WebP</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-5ecbbbbbd99e5079.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="步骤一"></p>
-<p>选择比例</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-e996f7387176ae88.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="步骤二"></p>
-<p>可以看到图片的比例，也可以调整比例，然后点击完成<br><img src="https://upload-images.jianshu.io/upload_images/8369889-42a8416a2d5afb33.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="步骤三"></p>
-<p>接下来看看打包后的 APK 大小</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-ffbdbd93fce0fb03.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="APK 大小"></p>
+<ul>
+<li>我们试试加上 configChanges ，根据书本中内容介绍的熟悉，样例编译的 API 都大于 13 ，所以我们得加上 screenSize</li>
+</ul>
+<p><img src="https://upload-images.jianshu.io/upload_images/8369889-9912d1d7b326fec5.gif?imageMogr2/auto-orient/strip" alt="configChanges.gif"></p>
+<p>#####我旋转了几次，下面是旋转的生命周期</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/8369889-b067459f9f482baa.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="configChanges.jpg"></p>
 <blockquote>
-<p>由 6.21MB → 4.33MB </p>
+<p>可以从生命周期中看到，并没有执行 onSaveInstanceState ，所以 Activity 并没有重新创建。</p>
 </blockquote>
-<p><a href="https://github.com/DarrenHang/Darren-Android" target="_blank" rel="noopener">github例子地址</a></p>
+<p>#####生命周期大概就介绍到这里了，如果有什么错误可以在下方的评论中指出。</p>
+<p><a href="https://github.com/DarrenHang/Android-Develop-Art-Exploration" target="_blank" rel="noopener">github例子地址</a></p>
 
       
     </div>
@@ -427,8 +413,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/03/MVP-Android/" rel="next" title="日常开发总结-Android Retrofit + Rx + OkHttp MVP">
-                <i class="fa fa-chevron-left"></i> 日常开发总结-Android Retrofit + Rx + OkHttp MVP
+              <a href="/2019/05/31/Okhttp-源码解析/" rel="next" title="日常开发总结-OkHttp 源码解析">
+                <i class="fa fa-chevron-left"></i> 日常开发总结-OkHttp 源码解析
               </a>
             
           </div>
@@ -437,8 +423,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/05/31/Okhttp-源码解析/" rel="prev" title="日常开发总结-OkHttp 源码解析">
-                日常开发总结-OkHttp 源码解析 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/07/31/Activity-单例模式/" rel="prev" title="日常开发总结-设计模式-单例模式">
+                日常开发总结-设计模式-单例模式 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -491,8 +477,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -534,6 +529,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#A-B"><span class="nav-number">1.</span> <span class="nav-text">A - B</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#B-返回-A"><span class="nav-number">2.</span> <span class="nav-text">B 返回 A</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
