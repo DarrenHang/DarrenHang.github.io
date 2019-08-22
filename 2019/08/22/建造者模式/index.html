@@ -86,28 +86,17 @@
 
 
 
-<meta name="description" content="#博主目前写文章是对日常开发的总结以及回顾，以及自我驱动。  本文参考- Android 开发艺术探索  #####分析正常情况下 Activity 的生命周期  第一次启动  切换到桌面  回到当前 Activity  退出 Activity   A - B  MainActivity 执行了 onPauseSecondActivity 执行了正常创建的生命周期流程MainActivity 执行">
+<meta name="description" content="什么是建造者（Builder） ？ 将一个复杂对象的构建与它表示分离，使得同样的建造过程可以创建不同的表示   个人理解：创建对象的过程相同，构建不同从而产生不同的对象  为什么使用建造者 ？ 对象比较复杂，初始化参数较多  #建造者模式   这里我们用 Students 举个🌰 1234567891011121314151617181920212223242526272829303132333">
 <meta property="og:type" content="article">
-<meta property="og:title" content="日常开发总结-Activity 生命周期 (手撸 Android 开发艺术探索)">
-<meta property="og:url" content="http://yoursite.com/2019/07/25/Activity-生命周期/index.html">
+<meta property="og:title" content="日常开发总结-设计模式-建造者模式">
+<meta property="og:url" content="http://yoursite.com/2019/08/22/建造者模式/index.html">
 <meta property="og:site_name" content="DarrenHang">
-<meta property="og:description" content="#博主目前写文章是对日常开发的总结以及回顾，以及自我驱动。  本文参考- Android 开发艺术探索  #####分析正常情况下 Activity 的生命周期  第一次启动  切换到桌面  回到当前 Activity  退出 Activity   A - B  MainActivity 执行了 onPauseSecondActivity 执行了正常创建的生命周期流程MainActivity 执行">
+<meta property="og:description" content="什么是建造者（Builder） ？ 将一个复杂对象的构建与它表示分离，使得同样的建造过程可以创建不同的表示   个人理解：创建对象的过程相同，构建不同从而产生不同的对象  为什么使用建造者 ？ 对象比较复杂，初始化参数较多  #建造者模式   这里我们用 Students 举个🌰 1234567891011121314151617181920212223242526272829303132333">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-609da5e309e7bba3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-d91f62d493874e65.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-ba7185b0baad557c.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-83e2dedc5de7084e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-1371dec1e997270b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-c792ab3dba1134b9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-856b9df7c601543c.gif?imageMogr2/auto-orient/strip">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-7566241f083dc461.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-9912d1d7b326fec5.gif?imageMogr2/auto-orient/strip">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-b067459f9f482baa.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2019-07-31T07:21:24.518Z">
+<meta property="og:updated_time" content="2019-08-22T06:19:30.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="日常开发总结-Activity 生命周期 (手撸 Android 开发艺术探索)">
-<meta name="twitter:description" content="#博主目前写文章是对日常开发的总结以及回顾，以及自我驱动。  本文参考- Android 开发艺术探索  #####分析正常情况下 Activity 的生命周期  第一次启动  切换到桌面  回到当前 Activity  退出 Activity   A - B  MainActivity 执行了 onPauseSecondActivity 执行了正常创建的生命周期流程MainActivity 执行">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/8369889-609da5e309e7bba3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:title" content="日常开发总结-设计模式-建造者模式">
+<meta name="twitter:description" content="什么是建造者（Builder） ？ 将一个复杂对象的构建与它表示分离，使得同样的建造过程可以创建不同的表示   个人理解：创建对象的过程相同，构建不同从而产生不同的对象  为什么使用建造者 ？ 对象比较复杂，初始化参数较多  #建造者模式   这里我们用 Students 举个🌰 1234567891011121314151617181920212223242526272829303132333">
 
 
 
@@ -137,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/07/25/Activity-生命周期/">
+  <link rel="canonical" href="http://yoursite.com/2019/08/22/建造者模式/">
 
 
 
 
 
-  <title>日常开发总结-Activity 生命周期 (手撸 Android 开发艺术探索) | DarrenHang</title>
+  <title>日常开发总结-设计模式-建造者模式 | DarrenHang</title>
   
 
 
@@ -250,7 +239,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/25/Activity-生命周期/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/22/建造者模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="DarrenHang">
@@ -267,7 +256,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">日常开发总结-Activity 生命周期 (手撸 Android 开发艺术探索)</h1>
+          <h1 class="post-title" itemprop="name headline">日常开发总结-设计模式-建造者模式</h1>
         
 
         <div class="post-meta">
@@ -279,8 +268,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-25T00:00:00+08:00">
-                2019-07-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-22T00:00:00+08:00">
+                2019-08-22
               </time>
             
 
@@ -311,7 +300,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  323 字
+                  292 字
                 </span>
               
 
@@ -348,47 +337,28 @@
       
 
       
-        <p>#博主目前写文章是对日常开发的总结以及回顾，以及自我驱动。</p>
+        <h5 id="什么是建造者（Builder）-？"><a href="#什么是建造者（Builder）-？" class="headerlink" title="什么是建造者（Builder） ？"></a>什么是建造者（Builder） ？</h5><ul>
+<li>将一个复杂对象的构建与它表示分离，使得同样的建造过程可以创建不同的表示</li>
+</ul>
 <blockquote>
-<p>本文参考- Android 开发艺术探索</p>
+<p>个人理解：创建对象的过程相同，构建不同从而产生不同的对象</p>
 </blockquote>
-<p>#####分析正常情况下 Activity 的生命周期</p>
+<h5 id="为什么使用建造者-？"><a href="#为什么使用建造者-？" class="headerlink" title="为什么使用建造者 ？"></a>为什么使用建造者 ？</h5><ul>
+<li>对象比较复杂，初始化参数较多</li>
+</ul>
+<p>#建造者模式 </p>
 <ul>
-<li><p>第一次启动<br><img src="https://upload-images.jianshu.io/upload_images/8369889-609da5e309e7bba3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="正常启动Activity.jpg"></p>
+<li><p>这里我们用 Students 举个🌰</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"> public class Students &#123;</span><br><span class="line"></span><br><span class="line">   private String name;</span><br><span class="line">   private String age;</span><br><span class="line">   private String sex;</span><br><span class="line"></span><br><span class="line">   private Students() &#123;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   private Students(Builder builder) &#123;</span><br><span class="line">       this.name = builder.name;</span><br><span class="line">       this.age = builder.age;</span><br><span class="line">       this.sex = builder.sex;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   public static class Builder &#123;</span><br><span class="line"></span><br><span class="line">       private String name;</span><br><span class="line">       private String age;</span><br><span class="line">       private String sex;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       public Builder setName(String name) &#123;</span><br><span class="line">           this.name = name;</span><br><span class="line">           return this;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       public Builder setAge(String age) &#123;</span><br><span class="line">           this.age = age;</span><br><span class="line">           return this;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       public Builder setSex(String sex) &#123;</span><br><span class="line">           this.sex = sex;</span><br><span class="line">           return this;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       public Students build() &#123;</span><br><span class="line">           return new Students(this);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>切换到桌面<br><img src="https://upload-images.jianshu.io/upload_images/8369889-d91f62d493874e65.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="切换到桌面.jpg"></p>
+<li><p>使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Students students = new Students.Builder()</span><br><span class="line">              .setAge(&quot;18&quot;)</span><br><span class="line">              .setName(&quot;张三&quot;)</span><br><span class="line">              .setSex(&quot;男&quot;)</span><br><span class="line">              .build();</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>回到当前 Activity<br><img src="https://upload-images.jianshu.io/upload_images/8369889-ba7185b0baad557c.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="再次回到当前Activity.jpg"></p>
-</li>
-<li><p>退出 Activity<br><img src="https://upload-images.jianshu.io/upload_images/8369889-83e2dedc5de7084e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="退出Activity.jpg"></p>
+<li><p>结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;age&quot;:&quot;18&quot;,&quot;name&quot;:&quot;张三&quot;,&quot;sex&quot;:&quot;男&quot;&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h5 id="A-B"><a href="#A-B" class="headerlink" title="A - B"></a>A - B</h5><p><img src="https://upload-images.jianshu.io/upload_images/8369889-1371dec1e997270b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="生命周期变化.jpg"></p>
-<blockquote>
-<p>MainActivity 执行了 onPause<br>SecondActivity 执行了正常创建的生命周期流程<br>MainActivity 执行了 onStop</p>
-</blockquote>
-<h5 id="B-返回-A"><a href="#B-返回-A" class="headerlink" title="B 返回 A"></a>B 返回 A</h5><p><img src="https://upload-images.jianshu.io/upload_images/8369889-c792ab3dba1134b9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="返回.jpg"></p>
-<p>#####分析异常情况下 Activity 的生命周期</p>
-<p>#####屏幕旋转 Activity 的生命周期</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-856b9df7c601543c.gif?imageMogr2/auto-orient/strip" alt="屏幕旋转.gif"></p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-7566241f083dc461.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="旋转.jpg"></p>
-<blockquote>
-<p>看生命周期可以发现，在 Activity 正常销毁时候不会掉用 onSaveInstanceState，所以我们可以了理解成在 Activity 异常销毁时才会执行 onSaveInstanceState 和 onRestoreInstanceState 来存储和恢复数据。</p>
-</blockquote>
-<blockquote>
-<p>注：如果不想系统重新创建 Activity ，可以给 Activity 指定 configChanges 属性，指定多个熟悉可以用 | 拼接</p>
-</blockquote>
-<ul>
-<li>我们试试加上 configChanges ，根据书本中内容介绍的熟悉，样例编译的 API 都大于 13 ，所以我们得加上 screenSize</li>
-</ul>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-9912d1d7b326fec5.gif?imageMogr2/auto-orient/strip" alt="configChanges.gif"></p>
-<p>#####我旋转了几次，下面是旋转的生命周期</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-b067459f9f482baa.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="configChanges.jpg"></p>
-<blockquote>
-<p>可以从生命周期中看到，并没有执行 onSaveInstanceState ，所以 Activity 并没有重新创建。</p>
-</blockquote>
-<p>#####生命周期大概就介绍到这里了，如果有什么错误可以在下方的评论中指出。</p>
-<p><a href="https://github.com/DarrenHang/Android-Develop-Art-Exploration" target="_blank" rel="noopener">github例子地址</a></p>
+<h5 id="建造者模式大概就介绍到这里了，如果有什么错误可以在下方的评论中指出。"><a href="#建造者模式大概就介绍到这里了，如果有什么错误可以在下方的评论中指出。" class="headerlink" title="建造者模式大概就介绍到这里了，如果有什么错误可以在下方的评论中指出。"></a>建造者模式大概就介绍到这里了，如果有什么错误可以在下方的评论中指出。</h5><p><a href="https://github.com/DarrenHang/Design-Patterns" target="_blank" rel="noopener">github例子地址</a></p>
 
       
     </div>
@@ -413,8 +383,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/31/Okhttp-源码解析/" rel="next" title="日常开发总结-OkHttp 源码解析">
-                <i class="fa fa-chevron-left"></i> 日常开发总结-OkHttp 源码解析
+              <a href="/2019/07/31/单例模式/" rel="next" title="日常开发总结-设计模式-单例模式">
+                <i class="fa fa-chevron-left"></i> 日常开发总结-设计模式-单例模式
               </a>
             
           </div>
@@ -422,10 +392,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/31/单例模式/" rel="prev" title="日常开发总结-设计模式-单例模式">
-                日常开发总结-设计模式-单例模式 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -539,7 +505,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#A-B"><span class="nav-number">1.</span> <span class="nav-text">A - B</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#B-返回-A"><span class="nav-number">2.</span> <span class="nav-text">B 返回 A</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是建造者（Builder）-？"><span class="nav-number">1.</span> <span class="nav-text">什么是建造者（Builder） ？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么使用建造者-？"><span class="nav-number">2.</span> <span class="nav-text">为什么使用建造者 ？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#建造者模式大概就介绍到这里了，如果有什么错误可以在下方的评论中指出。"><span class="nav-number">3.</span> <span class="nav-text">建造者模式大概就介绍到这里了，如果有什么错误可以在下方的评论中指出。</span></a></li></ol></div>
             
 
           </div>
