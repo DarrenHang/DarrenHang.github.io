@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="OkHTTP 中同步请求和异步请求获取 Response 对象都会调用到 getResponseWithInterceptorChain() 这个方法，这个方法其实是构成了一个拦截器的链，下面具体看一下方法。12345678910111213141516171819202122232425262728293031323334Response getResponseWithInterceptorC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="日常开发总结-OkHttp 源码解析（拦截器链）">
+<meta property="og:url" content="http://yoursite.com/2020/04/01/Okhttp-拦截器/index.html">
+<meta property="og:site_name" content="DarrenHang">
+<meta property="og:description" content="OkHTTP 中同步请求和异步请求获取 Response 对象都会调用到 getResponseWithInterceptorChain() 这个方法，这个方法其实是构成了一个拦截器的链，下面具体看一下方法。12345678910111213141516171819202122232425262728293031323334Response getResponseWithInterceptorC">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-17T09:49:36.973Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="日常开发总结-OkHttp 源码解析（拦截器链）">
+<meta name="twitter:description" content="OkHTTP 中同步请求和异步请求获取 Response 对象都会调用到 getResponseWithInterceptorChain() 这个方法，这个方法其实是构成了一个拦截器的链，下面具体看一下方法。12345678910111213141516171819202122232425262728293031323334Response getResponseWithInterceptorC">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/04/01/Okhttp-拦截器/">
+
+
+
+
+
+  <title>日常开发总结-OkHttp 源码解析（拦截器链） | DarrenHang</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">DarrenHang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home //首页"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive //归档"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/01/Okhttp-拦截器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="DarrenHang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DarrenHang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">日常开发总结-OkHttp 源码解析（拦截器链）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-01T00:00:00+08:00">
+                2020-04-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  958 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>OkHTTP 中同步请求和异步请求获取 Response 对象都会调用到 getResponseWithInterceptorChain() 这个方法，这个方法其实是构成了一个拦截器的链，下面具体看一下方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">Response getResponseWithInterceptorChain() throws IOException &#123;</span><br><span class="line">    // Build a full stack of interceptors.</span><br><span class="line">    List&lt;Interceptor&gt; interceptors = new ArrayList&lt;&gt;();</span><br><span class="line">    interceptors.addAll(client.interceptors());</span><br><span class="line">    interceptors.add(new RetryAndFollowUpInterceptor(client));</span><br><span class="line">    interceptors.add(new BridgeInterceptor(client.cookieJar()));</span><br><span class="line">    interceptors.add(new CacheInterceptor(client.internalCache()));</span><br><span class="line">    interceptors.add(new ConnectInterceptor(client));</span><br><span class="line">    if (!forWebSocket) &#123;</span><br><span class="line">      interceptors.addAll(client.networkInterceptors());</span><br><span class="line">    &#125;</span><br><span class="line">    interceptors.add(new CallServerInterceptor(forWebSocket));</span><br><span class="line"></span><br><span class="line">    Interceptor.Chain chain = new RealInterceptorChain(interceptors, transmitter, null, 0,</span><br><span class="line">        originalRequest, this, client.connectTimeoutMillis(),</span><br><span class="line">        client.readTimeoutMillis(), client.writeTimeoutMillis());</span><br><span class="line"></span><br><span class="line">    boolean calledNoMoreExchanges = false;</span><br><span class="line">    try &#123;</span><br><span class="line">      Response response = chain.proceed(originalRequest);</span><br><span class="line">      if (transmitter.isCanceled()) &#123;</span><br><span class="line">        closeQuietly(response);</span><br><span class="line">        throw new IOException(&quot;Canceled&quot;);</span><br><span class="line">      &#125;</span><br><span class="line">      return response;</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">      calledNoMoreExchanges = true;</span><br><span class="line">      throw transmitter.noMoreExchanges(e);</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">      if (!calledNoMoreExchanges) &#123;</span><br><span class="line">        transmitter.noMoreExchanges(null);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>首先可以看到创建了一个 RealInterceptorChain 对象，然后将拦截器集合放入构造函数中完成对象的创建。然后执行 chain.proceed 方法进行请求。下面看下 proceed 方法。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@Override public Response proceed(Request request) throws IOException &#123;</span><br><span class="line">    return proceed(request, transmitter, exchange);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>它调用的是另外一个重载方法</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">public Response proceed(Request request, Transmitter transmitter, @Nullable Exchange exchange)</span><br><span class="line">      throws IOException &#123;</span><br><span class="line">    if (index &gt;= interceptors.size()) throw new AssertionError();</span><br><span class="line"></span><br><span class="line">    calls++;</span><br><span class="line"></span><br><span class="line">    // If we already have a stream, confirm that the incoming request will use it.</span><br><span class="line">    if (this.exchange != null &amp;&amp; !this.exchange.connection().supportsUrl(request.url())) &#123;</span><br><span class="line">      throw new IllegalStateException(&quot;network interceptor &quot; + interceptors.get(index - 1)</span><br><span class="line">          + &quot; must retain the same host and port&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // If we already have a stream, confirm that this is the only call to chain.proceed().</span><br><span class="line">    if (this.exchange != null &amp;&amp; calls &gt; 1) &#123;</span><br><span class="line">      throw new IllegalStateException(&quot;network interceptor &quot; + interceptors.get(index - 1)</span><br><span class="line">          + &quot; must call proceed() exactly once&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Call the next interceptor in the chain.</span><br><span class="line">    RealInterceptorChain next = new RealInterceptorChain(interceptors, transmitter, exchange,</span><br><span class="line">        index + 1, request, call, connectTimeout, readTimeout, writeTimeout);</span><br><span class="line">    Interceptor interceptor = interceptors.get(index);</span><br><span class="line">    Response response = interceptor.intercept(next);</span><br><span class="line"></span><br><span class="line">    // Confirm that the next interceptor made its required call to chain.proceed().</span><br><span class="line">    if (exchange != null &amp;&amp; index + 1 &lt; interceptors.size() &amp;&amp; next.calls != 1) &#123;</span><br><span class="line">      throw new IllegalStateException(&quot;network interceptor &quot; + interceptor</span><br><span class="line">          + &quot; must call proceed() exactly once&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Confirm that the intercepted response isn&apos;t null.</span><br><span class="line">    if (response == null) &#123;</span><br><span class="line">      throw new NullPointerException(&quot;interceptor &quot; + interceptor + &quot; returned null&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (response.body() == null) &#123;</span><br><span class="line">      throw new IllegalStateException(</span><br><span class="line">          &quot;interceptor &quot; + interceptor + &quot; returned a response with no body&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return response;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>它和之前创建 RealInterceptorChain 不同的地方在于传入的索引不一样，这样就把我们的拦截器构成了一个链条。</p>
+</blockquote>
+<blockquote>
+<p>具体我们可以看看 RetryAndFollowUpInterceptor 这个拦截器。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">@Override public Response intercept(Chain chain) throws IOException &#123;</span><br><span class="line">    Request request = chain.request();</span><br><span class="line">    RealInterceptorChain realChain = (RealInterceptorChain) chain;</span><br><span class="line">    Transmitter transmitter = realChain.transmitter();</span><br><span class="line"></span><br><span class="line">    int followUpCount = 0;</span><br><span class="line">    Response priorResponse = null;</span><br><span class="line">    while (true) &#123;</span><br><span class="line">      transmitter.prepareToConnect(request);</span><br><span class="line"></span><br><span class="line">      if (transmitter.isCanceled()) &#123;</span><br><span class="line">        throw new IOException(&quot;Canceled&quot;);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      Response response;</span><br><span class="line">      boolean success = false;</span><br><span class="line">      try &#123;</span><br><span class="line">        response = realChain.proceed(request, transmitter, null);</span><br><span class="line">        success = true;</span><br><span class="line">      &#125; catch (RouteException e) &#123;</span><br><span class="line">        // The attempt to connect via a route failed. The request will not have been sent.</span><br><span class="line">        if (!recover(e.getLastConnectException(), transmitter, false, request)) &#123;</span><br><span class="line">          throw e.getFirstConnectException();</span><br><span class="line">        &#125;</span><br><span class="line">        continue;</span><br><span class="line">      &#125; catch (IOException e) &#123;</span><br><span class="line">        // An attempt to communicate with a server failed. The request may have been sent.</span><br><span class="line">        boolean requestSendStarted = !(e instanceof ConnectionShutdownException);</span><br><span class="line">        if (!recover(e, transmitter, requestSendStarted, request)) throw e;</span><br><span class="line">        continue;</span><br><span class="line">      &#125; finally &#123;</span><br><span class="line">        // The network call threw an exception. Release any resources.</span><br><span class="line">        if (!success) &#123;</span><br><span class="line">          transmitter.exchangeDoneDueToException();</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      // Attach the prior response if it exists. Such responses never have a body.</span><br><span class="line">      if (priorResponse != null) &#123;</span><br><span class="line">        response = response.newBuilder()</span><br><span class="line">            .priorResponse(priorResponse.newBuilder()</span><br><span class="line">                    .body(null)</span><br><span class="line">                    .build())</span><br><span class="line">            .build();</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      Exchange exchange = Internal.instance.exchange(response);</span><br><span class="line">      Route route = exchange != null ? exchange.connection().route() : null;</span><br><span class="line">      Request followUp = followUpRequest(response, route);</span><br><span class="line"></span><br><span class="line">      if (followUp == null) &#123;</span><br><span class="line">        if (exchange != null &amp;&amp; exchange.isDuplex()) &#123;</span><br><span class="line">          transmitter.timeoutEarlyExit();</span><br><span class="line">        &#125;</span><br><span class="line">        return response;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      RequestBody followUpBody = followUp.body();</span><br><span class="line">      if (followUpBody != null &amp;&amp; followUpBody.isOneShot()) &#123;</span><br><span class="line">        return response;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      closeQuietly(response.body());</span><br><span class="line">      if (transmitter.hasExchange()) &#123;</span><br><span class="line">        exchange.detachWithViolence();</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      if (++followUpCount &gt; MAX_FOLLOW_UPS) &#123;</span><br><span class="line">        throw new ProtocolException(&quot;Too many follow-up requests: &quot; + followUpCount);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      request = followUp;</span><br><span class="line">      priorResponse = response;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>它执行了 realChain.proceed 方法，上面我们分析了 proceed 方法其实是执行下一条拦截器的 intercept 方法。</p>
+</blockquote>
+<p>#####我们可以简单的理解 : 一个 OkHttp 的请求过程，就是一个一个拦截器执行 intercept 的过程。</p>
+<p>#####intercept 方法大概可以理解成</p>
+<ul>
+<li>处理 Request 请求</li>
+<li>调用下一个拦截器获取 Response</li>
+<li>返回 Response 给上一个拦截器</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/30/微信支付回掉/" rel="next" title="日常开发总结-微信支付-回调（WXPayEntryActivity 收不到回调）">
+                <i class="fa fa-chevron-left"></i> 日常开发总结-微信支付-回调（WXPayEntryActivity 收不到回调）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/02/Okhttp-RetryAndFollowUpInterceptor/" rel="prev" title="日常开发总结-OkHttp 源码解析（RetryAndFollowUpInterceptor）">
+                日常开发总结-OkHttp 源码解析（RetryAndFollowUpInterceptor） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">DarrenHang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  
+  <span class="author" itemprop="copyrightHolder">DarrenHang</span>
+
+  <!--
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">7.7k</span>
+  
+  -->
+</div>
+
+
+
+
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span id="busuanzi_container_site_pv">博客总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>
+    <span class="post-meta-divider">|</span>
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客共记 7.7k 字</span>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
