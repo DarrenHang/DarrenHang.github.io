@@ -86,28 +86,17 @@
 
 
 
-<meta name="description" content="#博主目前写文章是对日常开发的总结以及回顾，以及自我驱动。  本文参考- Android 开发艺术探索  #####分析正常情况下 Activity 的生命周期  第一次启动  切换到桌面  回到当前 Activity  退出 Activity   A - B  MainActivity 执行了 onPauseSecondActivity 执行了正常创建的生命周期流程MainActivity 执行">
+<meta name="description" content="博主也是刚开始学习 Kotlin 没多久，本文是对《第一行代码》- 第三版中主构造函数和次构造函数的总结。非常推荐这本书作为 Kotlin 入门，建议可以自己把书中的例子自己敲一遍。  Kotlin 中的继承123open class People &amp;#123;&amp;#125;  Java 中类是可以默认继承的，但是 Kotlin 不一样。如果想要在 Kotlin 中的类被继承，那么需要使用关键字">
 <meta property="og:type" content="article">
-<meta property="og:title" content="日常开发总结-Activity 生命周期">
-<meta property="og:url" content="http://yoursite.com/2019/07/25/Activity-生命周期/index.html">
+<meta property="og:title" content="Kotlin (主构造函数、次构造函数)">
+<meta property="og:url" content="http://yoursite.com/2020/05/13/Kotlin-主构造函数、次构造函数/index.html">
 <meta property="og:site_name" content="DarrenHang">
-<meta property="og:description" content="#博主目前写文章是对日常开发的总结以及回顾，以及自我驱动。  本文参考- Android 开发艺术探索  #####分析正常情况下 Activity 的生命周期  第一次启动  切换到桌面  回到当前 Activity  退出 Activity   A - B  MainActivity 执行了 onPauseSecondActivity 执行了正常创建的生命周期流程MainActivity 执行">
+<meta property="og:description" content="博主也是刚开始学习 Kotlin 没多久，本文是对《第一行代码》- 第三版中主构造函数和次构造函数的总结。非常推荐这本书作为 Kotlin 入门，建议可以自己把书中的例子自己敲一遍。  Kotlin 中的继承123open class People &amp;#123;&amp;#125;  Java 中类是可以默认继承的，但是 Kotlin 不一样。如果想要在 Kotlin 中的类被继承，那么需要使用关键字">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-609da5e309e7bba3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-d91f62d493874e65.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-ba7185b0baad557c.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-83e2dedc5de7084e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-1371dec1e997270b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-c792ab3dba1134b9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-856b9df7c601543c.gif?imageMogr2/auto-orient/strip">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-7566241f083dc461.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-9912d1d7b326fec5.gif?imageMogr2/auto-orient/strip">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/8369889-b067459f9f482baa.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2020-04-17T09:47:01.801Z">
+<meta property="og:updated_time" content="2020-05-19T08:53:42.623Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="日常开发总结-Activity 生命周期">
-<meta name="twitter:description" content="#博主目前写文章是对日常开发的总结以及回顾，以及自我驱动。  本文参考- Android 开发艺术探索  #####分析正常情况下 Activity 的生命周期  第一次启动  切换到桌面  回到当前 Activity  退出 Activity   A - B  MainActivity 执行了 onPauseSecondActivity 执行了正常创建的生命周期流程MainActivity 执行">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/8369889-609da5e309e7bba3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:title" content="Kotlin (主构造函数、次构造函数)">
+<meta name="twitter:description" content="博主也是刚开始学习 Kotlin 没多久，本文是对《第一行代码》- 第三版中主构造函数和次构造函数的总结。非常推荐这本书作为 Kotlin 入门，建议可以自己把书中的例子自己敲一遍。  Kotlin 中的继承123open class People &amp;#123;&amp;#125;  Java 中类是可以默认继承的，但是 Kotlin 不一样。如果想要在 Kotlin 中的类被继承，那么需要使用关键字">
 
 
 
@@ -137,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/07/25/Activity-生命周期/">
+  <link rel="canonical" href="http://yoursite.com/2020/05/13/Kotlin-主构造函数、次构造函数/">
 
 
 
 
 
-  <title>日常开发总结-Activity 生命周期 | DarrenHang</title>
+  <title>Kotlin (主构造函数、次构造函数) | DarrenHang</title>
   
 
 
@@ -250,7 +239,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/25/Activity-生命周期/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/13/Kotlin-主构造函数、次构造函数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="DarrenHang">
@@ -267,7 +256,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">日常开发总结-Activity 生命周期</h1>
+          <h1 class="post-title" itemprop="name headline">Kotlin (主构造函数、次构造函数)</h1>
         
 
         <div class="post-meta">
@@ -279,8 +268,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-25T00:00:00+08:00">
-                2019-07-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-13T00:00:00+08:00">
+                2020-05-13
               </time>
             
 
@@ -311,7 +300,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  323 字
+                  575 字
                 </span>
               
 
@@ -327,7 +316,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  2 分钟
                 </span>
               
             </div>
@@ -348,47 +337,53 @@
       
 
       
-        <p>#博主目前写文章是对日常开发的总结以及回顾，以及自我驱动。</p>
-<blockquote>
-<p>本文参考- Android 开发艺术探索</p>
+        <blockquote>
+<p>博主也是刚开始学习 Kotlin 没多久，本文是对《第一行代码》- 第三版中主构造函数和次构造函数的总结。非常推荐这本书作为 Kotlin 入门，建议可以自己把书中的例子自己敲一遍。</p>
 </blockquote>
-<p>#####分析正常情况下 Activity 的生命周期</p>
+<h5 id="Kotlin-中的继承"><a href="#Kotlin-中的继承" class="headerlink" title="Kotlin 中的继承"></a>Kotlin 中的继承</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">open class People &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Java 中类是可以默认继承的，但是 Kotlin 不一样。如果想要在 Kotlin 中的类被继承，那么需要使用关键字 open。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class Student : People() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Java 中继承使用 extends,Kotlin 中继承使用 “ : “ 来处理。Java 中类继承不需要括号, Kotlin 中类继承需要括号。</p>
+</blockquote>
+<hr>
+<p>#####主构造函数</p>
 <ul>
-<li><p>第一次启动<br><img src="https://upload-images.jianshu.io/upload_images/8369889-609da5e309e7bba3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="正常启动Activity.jpg"></p>
-</li>
-<li><p>切换到桌面<br><img src="https://upload-images.jianshu.io/upload_images/8369889-d91f62d493874e65.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="切换到桌面.jpg"></p>
-</li>
-<li><p>回到当前 Activity<br><img src="https://upload-images.jianshu.io/upload_images/8369889-ba7185b0baad557c.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="再次回到当前Activity.jpg"></p>
-</li>
-<li><p>退出 Activity<br><img src="https://upload-images.jianshu.io/upload_images/8369889-83e2dedc5de7084e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="退出Activity.jpg"></p>
-</li>
+<li>父类无参构造函数</li>
 </ul>
-<h5 id="A-B"><a href="#A-B" class="headerlink" title="A - B"></a>A - B</h5><p><img src="https://upload-images.jianshu.io/upload_images/8369889-1371dec1e997270b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="生命周期变化.jpg"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//不带参数</span><br><span class="line">class Student (): People() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>MainActivity 执行了 onPause<br>SecondActivity 执行了正常创建的生命周期流程<br>MainActivity 执行了 onStop</p>
+<p>每个类有个默认不带参数的主构造函数。<br>主构造函数的特点-&gt; 没有函数体，直接定义在类名后。</p>
 </blockquote>
-<h5 id="B-返回-A"><a href="#B-返回-A" class="headerlink" title="B 返回 A"></a>B 返回 A</h5><p><img src="https://upload-images.jianshu.io/upload_images/8369889-c792ab3dba1134b9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="返回.jpg"></p>
-<p>#####分析异常情况下 Activity 的生命周期</p>
-<p>#####屏幕旋转 Activity 的生命周期</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-856b9df7c601543c.gif?imageMogr2/auto-orient/strip" alt="屏幕旋转.gif"></p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-7566241f083dc461.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="旋转.jpg"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//带参数</span><br><span class="line">class Student(sno: String, grade: Int) : People() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>看生命周期可以发现，在 Activity 正常销毁时候不会掉用 onSaveInstanceState，所以我们可以了理解成在 Activity 异常销毁时才会执行 onSaveInstanceState 和 onRestoreInstanceState 来存储和恢复数据。</p>
-</blockquote>
-<blockquote>
-<p>注：如果不想系统重新创建 Activity ，可以给 Activity 指定 configChanges 属性，指定多个熟悉可以用 | 拼接</p>
+<p>Java 和 Kotlin 一样，子类的构造函数必须调用父类的构造函数。<br>上面代码中 Student 类初始化主构造函数时候会调用 People 类的无参主构造函数，即使没有参数也不能省略，所以这也是 Kotlin 中继承类有括号的原因。</p>
 </blockquote>
 <ul>
-<li>我们试试加上 configChanges ，根据书本中内容介绍的熟悉，样例编译的 API 都大于 13 ，所以我们得加上 screenSize</li>
+<li>父类有参构造函数</li>
 </ul>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-9912d1d7b326fec5.gif?imageMogr2/auto-orient/strip" alt="configChanges.gif"></p>
-<p>#####我旋转了几次，下面是旋转的生命周期</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/8369889-b067459f9f482baa.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="configChanges.jpg"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class Student(sno: String, grade: Int, name: String, age: Int) : People(name, age) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>可以从生命周期中看到，并没有执行 onSaveInstanceState ，所以 Activity 并没有重新创建。</p>
+<p>当父类主构造函数带参数时，由于子类必须实现父类主构造函数，所以可以在子类的主构造函数中加入父类构造函数需要的参数。</p>
 </blockquote>
-<p>#####生命周期大概就介绍到这里了，如果有什么错误可以在下方的评论中指出。</p>
-<p><a href="https://github.com/DarrenHang/Android-Develop-Art-Exploration" target="_blank" rel="noopener">github例子地址</a></p>
+<hr>
+<p>#####次构造函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Student(sno: String, grade: Int, name: String, age: Int) : People(name, age) &#123;</span><br><span class="line"></span><br><span class="line">    constructor(name: String, age: Int) : this(&quot;&quot;, 0, name, age) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    constructor() : this(&quot;&quot;, 0) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>1-&gt; 次构造函数通过 constructor 关键字定义<br>2-&gt; Kotlin 规定所有次构造函数必须调用主构造函数</p>
+</blockquote>
+<p>#####有没有很像 Java 中的重载</p>
+<ul>
+<li>特殊情况，子类和父类都没有构造函数<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Students : Persons &#123;</span><br><span class="line">    constructor(name: String, age: Int) : super(name, age) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">open class Persons &#123;</span><br><span class="line">    constructor(name: String, age: Int) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>子类没有主构造函数所以不用带括号，同理父类也是一样。<br>this 关键字和 super 关键字也会比较好理解。</p>
+</blockquote>
+<hr>
+<p>#####大致的流程就是这样</p>
 
       
     </div>
@@ -413,8 +408,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/31/Okhttp-源码解析/" rel="next" title="日常开发总结-OkHttp 源码解析">
-                <i class="fa fa-chevron-left"></i> 日常开发总结-OkHttp 源码解析
+              <a href="/2020/04/02/Okhttp-RetryAndFollowUpInterceptor/" rel="next" title="日常开发总结-OkHttp 源码解析（RetryAndFollowUpInterceptor）">
+                <i class="fa fa-chevron-left"></i> 日常开发总结-OkHttp 源码解析（RetryAndFollowUpInterceptor）
               </a>
             
           </div>
@@ -422,10 +417,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/31/单例模式/" rel="prev" title="日常开发总结-设计模式-单例模式">
-                日常开发总结-设计模式-单例模式 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -539,7 +530,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#A-B"><span class="nav-number">1.</span> <span class="nav-text">A - B</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#B-返回-A"><span class="nav-number">2.</span> <span class="nav-text">B 返回 A</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#Kotlin-中的继承"><span class="nav-number">1.</span> <span class="nav-text">Kotlin 中的继承</span></a></li></ol></div>
             
 
           </div>
