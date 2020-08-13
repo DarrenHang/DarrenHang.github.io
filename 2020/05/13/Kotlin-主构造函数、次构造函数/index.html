@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="DarrenHang">
 <meta property="og:description" content="博主也是刚开始学习 Kotlin 没多久，本文是对《第一行代码》- 第三版中主构造函数和次构造函数的总结。非常推荐这本书作为 Kotlin 入门，建议可以自己把书中的例子自己敲一遍。  Kotlin 中的继承123open class People &amp;#123;&amp;#125;  Java 中类是可以默认继承的，但是 Kotlin 不一样。如果想要在 Kotlin 中的类被继承，那么需要使用关键字">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-05-19T08:53:42.623Z">
+<meta property="og:updated_time" content="2020-08-13T06:32:52.491Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin (主构造函数、次构造函数)">
 <meta name="twitter:description" content="博主也是刚开始学习 Kotlin 没多久，本文是对《第一行代码》- 第三版中主构造函数和次构造函数的总结。非常推荐这本书作为 Kotlin 入门，建议可以自己把书中的例子自己敲一遍。  Kotlin 中的继承123open class People &amp;#123;&amp;#125;  Java 中类是可以默认继承的，但是 Kotlin 不一样。如果想要在 Kotlin 中的类被继承，那么需要使用关键字">
@@ -349,8 +349,7 @@
 <p>Java 中继承使用 extends,Kotlin 中继承使用 “ : “ 来处理。Java 中类继承不需要括号, Kotlin 中类继承需要括号。</p>
 </blockquote>
 <hr>
-<p>#####主构造函数</p>
-<ul>
+<h5 id="主构造函数"><a href="#主构造函数" class="headerlink" title="主构造函数"></a>主构造函数</h5><ul>
 <li>父类无参构造函数</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//不带参数</span><br><span class="line">class Student (): People() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -369,12 +368,11 @@
 <p>当父类主构造函数带参数时，由于子类必须实现父类主构造函数，所以可以在子类的主构造函数中加入父类构造函数需要的参数。</p>
 </blockquote>
 <hr>
-<p>#####次构造函数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Student(sno: String, grade: Int, name: String, age: Int) : People(name, age) &#123;</span><br><span class="line"></span><br><span class="line">    constructor(name: String, age: Int) : this(&quot;&quot;, 0, name, age) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    constructor() : this(&quot;&quot;, 0) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="次构造函数"><a href="#次构造函数" class="headerlink" title="次构造函数"></a>次构造函数</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Student(sno: String, grade: Int, name: String, age: Int) : People(name, age) &#123;</span><br><span class="line"></span><br><span class="line">    constructor(name: String, age: Int) : this(&quot;&quot;, 0, name, age) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    constructor() : this(&quot;&quot;, 0) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>1-&gt; 次构造函数通过 constructor 关键字定义<br>2-&gt; Kotlin 规定所有次构造函数必须调用主构造函数</p>
 </blockquote>
-<p>#####有没有很像 Java 中的重载</p>
+<p>#有没有很像 Java 中的重载</p>
 <ul>
 <li>特殊情况，子类和父类都没有构造函数<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Students : Persons &#123;</span><br><span class="line">    constructor(name: String, age: Int) : super(name, age) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">open class Persons &#123;</span><br><span class="line">    constructor(name: String, age: Int) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
@@ -383,7 +381,7 @@
 <p>子类没有主构造函数所以不用带括号，同理父类也是一样。<br>this 关键字和 super 关键字也会比较好理解。</p>
 </blockquote>
 <hr>
-<p>#####大致的流程就是这样</p>
+<p>#大致的流程就是这样</p>
 
       
     </div>
@@ -408,7 +406,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/15/APK-优化/" rel="next" title="日常开发总结-APK 瘦身 优化">
+              <a href="/2019/04/15/APK-体积优化/" rel="next" title="日常开发总结-APK 瘦身 优化">
                 <i class="fa fa-chevron-left"></i> 日常开发总结-APK 瘦身 优化
               </a>
             
@@ -530,7 +528,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#Kotlin-中的继承"><span class="nav-number">1.</span> <span class="nav-text">Kotlin 中的继承</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#Kotlin-中的继承"><span class="nav-number">1.</span> <span class="nav-text">Kotlin 中的继承</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#主构造函数"><span class="nav-number">2.</span> <span class="nav-text">主构造函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#次构造函数"><span class="nav-number">3.</span> <span class="nav-text">次构造函数</span></a></li></ol></div>
             
 
           </div>
